@@ -2,9 +2,6 @@
     #include <GL/glu.h>
     #include <GL/glut.h>
 
-    static int shoulder = 0, elbow = 0, finger1 = 0, finger2 = 0, finger3 = 0, finger4 = 0, 
-    finger5 = 0, finger6 = 0;
-
     void init(void) 
     {
       glClearColor (0.0, 0.0, 0.0, 0.0);
