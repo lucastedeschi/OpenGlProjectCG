@@ -372,7 +372,6 @@
     {
        switch (key) {
           case 's':   //Exemplo
-             shoulder = (shoulder + 5) % 360;
              glutPostRedisplay();
              break;
           default:
