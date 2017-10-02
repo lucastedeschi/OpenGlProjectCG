@@ -1216,7 +1216,8 @@ void gameOver() {
 
     //Textos
     drawBitmapText("Respota Errada;", 1.5, -0.35, 0.0);
-    drawBitmapText("VOCE PERDEU!!!!!!!;", 1.4, -0.35, 0.0);
+    drawBitmapText("VOCE PERDEU!!!!!!!;", 1.45, -0.35, 0.0);
+    recomecar = 1;
 
     //Torres (Ordem contrária para fazer sobreposição)
     torreEsquerda(3);
