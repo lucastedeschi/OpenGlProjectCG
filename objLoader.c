@@ -5,7 +5,7 @@
 #include <stdio.h> 
 #include <stdlib.h> 
 
-// GAP do contador entre carregamentos
+//GAP do contador entre carregamentos
 #define GAP 1000
 
 //Variáveis auxiliares para o contador
@@ -26,8 +26,6 @@ int status = 0;
 int torreAtual = 0;
 int tempoEncerrado = 0;
 int recomecar = 1;
-
-int lockR = 1, lockL = 1;
 
 void init(void) {
     glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -688,7 +686,6 @@ void display() {
     chefeTorreDireita(0);
 
     glutSwapBuffers();
-
 }
 
 void onTorreMeioTimer(int value) {
@@ -738,14 +735,29 @@ void onTorreMeio(void) {
     torreDireita(0);
 
     //Chefões das Torres (Ordem contrária para fazer sobreposição)
-    chefeTorreEsquerda(0);
-    chefeTorreMeioEsquerdaB(0);
-    chefeTorreMeioEsquerdaA(0);
-    chefeTorreMeioB(1);
-    chefeTorreMeioA(0);
-    chefeTorreMeioDireitaB(0);
-    chefeTorreMeioDireitaA(0);
-    chefeTorreDireita(0);
+    if(onTorreMeioCounter % 2 != 0){
+        glPushMatrix();
+        glScalef(1.03, 1.03, 1.03);
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(0);
+        chefeTorreMeioEsquerdaA(0);
+        chefeTorreMeioB(1);
+        chefeTorreMeioA(0);
+        chefeTorreMeioDireitaB(0);
+        chefeTorreMeioDireitaA(0);
+        chefeTorreDireita(0);
+        glPopMatrix();
+    } else{
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(0);
+        chefeTorreMeioEsquerdaA(0);
+        chefeTorreMeioB(1);
+        chefeTorreMeioA(0);
+        chefeTorreMeioDireitaB(0);
+        chefeTorreMeioDireitaA(0);
+        chefeTorreDireita(0);
+    }
+    
 
     glutSwapBuffers();
 }
@@ -798,14 +810,28 @@ void onTorreEsquerdaA(void) {
     torreDireita(0);
 
     //Chefões das Torres (Ordem contrária para fazer sobreposição)
-    chefeTorreEsquerda(0);
-    chefeTorreMeioEsquerdaB(0);
-    chefeTorreMeioEsquerdaA(1);
-    chefeTorreMeioB(3);
-    chefeTorreMeioA(0);
-    chefeTorreMeioDireitaB(0);
-    chefeTorreMeioDireitaA(0);
-    chefeTorreDireita(0);
+    if(onTorreEsquerdaACounter % 2 != 0){
+        glPushMatrix();
+        glScalef(1.03, 1.03, 1.03);
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(0);
+        chefeTorreMeioEsquerdaA(1);
+        chefeTorreMeioB(3);
+        chefeTorreMeioA(0);
+        chefeTorreMeioDireitaB(0);
+        chefeTorreMeioDireitaA(0);
+        chefeTorreDireita(0);
+        glPopMatrix();
+    } else{
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(0);
+        chefeTorreMeioEsquerdaA(1);
+        chefeTorreMeioB(3);
+        chefeTorreMeioA(0);
+        chefeTorreMeioDireitaB(0);
+        chefeTorreMeioDireitaA(0);
+        chefeTorreDireita(0);
+    }
 
     glutSwapBuffers();
 
@@ -859,14 +885,30 @@ void onTorreEsquerdaB(void) {
     torreDireita(0);
 
     //Chefões das Torres (Ordem contrária para fazer sobreposição)
-    chefeTorreEsquerda(0);
-    chefeTorreMeioEsquerdaB(1);
-    chefeTorreMeioEsquerdaA(3);
-    chefeTorreMeioB(3);
-    chefeTorreMeioA(0);
-    chefeTorreMeioDireitaB(0);
-    chefeTorreMeioDireitaA(0);
-    chefeTorreDireita(0);
+    if(onTorreEsquerdaBCounter % 2 != 0){
+        glPushMatrix();
+        glScalef(1.03, 1.03, 1.03);
+        chefeTorreEsquerda(0);
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(1);
+        chefeTorreMeioEsquerdaA(3);
+        chefeTorreMeioB(3);
+        chefeTorreMeioA(0);
+        chefeTorreMeioDireitaB(0);
+        chefeTorreMeioDireitaA(0);
+        chefeTorreDireita(0);
+        glPopMatrix();
+    } else{
+        chefeTorreEsquerda(0);
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(1);
+        chefeTorreMeioEsquerdaA(3);
+        chefeTorreMeioB(3);
+        chefeTorreMeioA(0);
+        chefeTorreMeioDireitaB(0);
+        chefeTorreMeioDireitaA(0);
+        chefeTorreDireita(0);
+    }
 
     glutSwapBuffers();
 }
@@ -920,14 +962,28 @@ void onTorreEsquerda() {
     torreDireita(0);
 
     //Chefões das Torres (Ordem contrária para fazer sobreposição)
-    chefeTorreEsquerda(1);
-    chefeTorreMeioEsquerdaB(3);
-    chefeTorreMeioEsquerdaA(3);
-    chefeTorreMeioB(3);
-    chefeTorreMeioA(0);
-    chefeTorreMeioDireitaB(0);
-    chefeTorreMeioDireitaA(0);
-    chefeTorreDireita(0);
+    if(onTorreEsquerdaCounter % 2 != 0){
+        glPushMatrix();
+        glScalef(1.03, 1.03, 1.03);
+        chefeTorreEsquerda(1);
+        chefeTorreMeioEsquerdaB(3);
+        chefeTorreMeioEsquerdaA(3);
+        chefeTorreMeioB(3);
+        chefeTorreMeioA(0);
+        chefeTorreMeioDireitaB(0);
+        chefeTorreMeioDireitaA(0);
+        chefeTorreDireita(0);
+        glPopMatrix();
+    } else{
+        chefeTorreEsquerda(1);
+        chefeTorreMeioEsquerdaB(3);
+        chefeTorreMeioEsquerdaA(3);
+        chefeTorreMeioB(3);
+        chefeTorreMeioA(0);
+        chefeTorreMeioDireitaB(0);
+        chefeTorreMeioDireitaA(0);
+        chefeTorreDireita(0);
+    }
 
     glutSwapBuffers();
 }
@@ -979,14 +1035,28 @@ void onTorreMeioB() {
     torreDireita(0);
 
     //Chefões das Torres (Ordem contrária para fazer sobreposição)
-    chefeTorreEsquerda(0);
-    chefeTorreMeioEsquerdaB(0);
-    chefeTorreMeioEsquerdaA(0);
-    chefeTorreMeioB(0);
-    chefeTorreMeioA(1);
-    chefeTorreMeioDireitaB(0);
-    chefeTorreMeioDireitaA(0);
-    chefeTorreDireita(0);
+    if(onTorreMeioBCounter % 2 != 0){
+        glPushMatrix();
+        glScalef(1.03, 1.03, 1.03);
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(0);
+        chefeTorreMeioEsquerdaA(0);
+        chefeTorreMeioB(0);
+        chefeTorreMeioA(1);
+        chefeTorreMeioDireitaB(0);
+        chefeTorreMeioDireitaA(0);
+        chefeTorreDireita(0);
+        glPopMatrix();
+    } else {
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(0);
+        chefeTorreMeioEsquerdaA(0);
+        chefeTorreMeioB(0);
+        chefeTorreMeioA(1);
+        chefeTorreMeioDireitaB(0);
+        chefeTorreMeioDireitaA(0);
+        chefeTorreDireita(0);
+    }
 
     glutSwapBuffers();
 }
@@ -1039,14 +1109,28 @@ void onTorreDireitaA() {
     torreDireita(0);
 
     //Chefões das Torres (Ordem contrária para fazer sobreposição)
-    chefeTorreEsquerda(0);
-    chefeTorreMeioEsquerdaB(0);
-    chefeTorreMeioEsquerdaA(0);
-    chefeTorreMeioB(0);
-    chefeTorreMeioA(3);
-    chefeTorreMeioDireitaB(0);
-    chefeTorreMeioDireitaA(1);
-    chefeTorreDireita(0);
+    if(onTorreDireitaACounter % 2 != 0){
+        glPushMatrix();
+        glScalef(1.03, 1.03, 1.03);
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(0);
+        chefeTorreMeioEsquerdaA(0);
+        chefeTorreMeioB(0);
+        chefeTorreMeioA(3);
+        chefeTorreMeioDireitaB(0);
+        chefeTorreMeioDireitaA(1);
+        chefeTorreDireita(0);
+        glPopMatrix();
+    } else {
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(0);
+        chefeTorreMeioEsquerdaA(0);
+        chefeTorreMeioB(0);
+        chefeTorreMeioA(3);
+        chefeTorreMeioDireitaB(0);
+        chefeTorreMeioDireitaA(1);
+        chefeTorreDireita(0);
+    }
 
     glutSwapBuffers();
 }
@@ -1099,14 +1183,28 @@ void onTorreDireitaB() {
     torreDireita(0);
 
     //Chefões das Torres (Ordem contrária para fazer sobreposição)
-    chefeTorreEsquerda(0);
-    chefeTorreMeioEsquerdaB(0);
-    chefeTorreMeioEsquerdaA(0);
-    chefeTorreMeioB(0);
-    chefeTorreMeioA(3);
-    chefeTorreMeioDireitaB(1);
-    chefeTorreMeioDireitaA(3);
-    chefeTorreDireita(0);
+    if(onTorreDireitaBCounter % 2 != 0){
+        glPushMatrix();
+        glScalef(1.03, 1.03, 1.03);
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(0);
+        chefeTorreMeioEsquerdaA(0);
+        chefeTorreMeioB(0);
+        chefeTorreMeioA(3);
+        chefeTorreMeioDireitaB(1);
+        chefeTorreMeioDireitaA(3);
+        chefeTorreDireita(0);
+        glPopMatrix();
+    } else {
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(0);
+        chefeTorreMeioEsquerdaA(0);
+        chefeTorreMeioB(0);
+        chefeTorreMeioA(3);
+        chefeTorreMeioDireitaB(1);
+        chefeTorreMeioDireitaA(3);
+        chefeTorreDireita(0);
+    }
 
     glutSwapBuffers();
 }
@@ -1159,14 +1257,28 @@ void onTorreDireita() {
     torreDireita(1);
 
     //Chefões das Torres (Ordem contrária para fazer sobreposição)
-    chefeTorreEsquerda(0);
-    chefeTorreMeioEsquerdaB(0);
-    chefeTorreMeioEsquerdaA(0);
-    chefeTorreMeioB(0);
-    chefeTorreMeioA(3);
-    chefeTorreMeioDireitaB(3);
-    chefeTorreMeioDireitaA(3);
-    chefeTorreDireita(1);
+    if(onTorreDireitaCounter % 2 != 0){
+        glPushMatrix();
+        glScalef(1.03, 1.03, 1.03);
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(0);
+        chefeTorreMeioEsquerdaA(0);
+        chefeTorreMeioB(0);
+        chefeTorreMeioA(3);
+        chefeTorreMeioDireitaB(3);
+        chefeTorreMeioDireitaA(3);
+        chefeTorreDireita(1);
+        glPopMatrix();
+    } else {
+        chefeTorreEsquerda(0);
+        chefeTorreMeioEsquerdaB(0);
+        chefeTorreMeioEsquerdaA(0);
+        chefeTorreMeioB(0);
+        chefeTorreMeioA(3);
+        chefeTorreMeioDireitaB(3);
+        chefeTorreMeioDireitaA(3);
+        chefeTorreDireita(1);
+    }
 
     glutSwapBuffers();
 
@@ -1307,7 +1419,6 @@ void keyboard(unsigned char key, int x, int y) {
             glutTimerFunc(GAP, onTorreMeioBTimer, 10);
             gluLookAt(posx, posy, posz, focx, focy, focz, disx, disy, disz);
             glutDisplayFunc(onTorreMeioB);
-            lockR = 0;
         }
         break;
     case 'n': //Seleciona lado esquerdo
@@ -1326,14 +1437,13 @@ void keyboard(unsigned char key, int x, int y) {
             tempoEncerrado = 0;
             gluLookAt(posx, posy, posz, focx, focy, focz, disx, disy, disz);
             status = 1;
-            lockL = 0;
             glutTimerFunc(GAP, onTorreMeioTimer, 10);
             glutDisplayFunc(onTorreMeio);
         }
         break;
     case '9':
         if(tempoEncerrado == 0){
-            if (lockL == 0 && torreAtual == 1) {
+            if (torreAtual == 1) {
                 glutTimerFunc(GAP, onTorreEsquerdaATimer, 10);
                 glutDisplayFunc(onTorreEsquerdaA);
             } else {
@@ -1343,7 +1453,7 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case '5':
         if(tempoEncerrado == 0){
-            if (lockL == 0 && torreAtual == 2) {
+            if (torreAtual == 2) {
                 glutTimerFunc(GAP, onTorreEsquerdaBTimer, 10);
                 glutDisplayFunc(onTorreEsquerdaB);
             } else {
@@ -1353,7 +1463,7 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case '2':
         if(tempoEncerrado == 0){
-            if (lockL == 0 && torreAtual == 3) {
+            if (torreAtual == 3) {
                 glutTimerFunc(GAP, onTorreEsquerdaTimer, 10);
                 glutDisplayFunc(onTorreEsquerda);
             } else {
@@ -1363,7 +1473,7 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case '8':
         if(tempoEncerrado == 0){
-            if (lockL == 0  && torreAtual == 4) {
+            if (torreAtual == 4) {
                 glutDisplayFunc(fimDeJogo);
             } else {
                 glutDisplayFunc(gameOver);
@@ -1372,7 +1482,7 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case '6':
         if(tempoEncerrado == 0){
-            if (lockR == 0  && torreAtual == 5) {
+            if (torreAtual == 5) {
                 glutTimerFunc(GAP, onTorreDireitaATimer, 10);
                 glutDisplayFunc(onTorreDireitaA);
             } else {
@@ -1383,7 +1493,7 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case '3':
         if(tempoEncerrado == 0){
-            if (lockR == 0  && torreAtual == 6) {
+            if (torreAtual == 6) {
                 glutTimerFunc(GAP, onTorreDireitaBTimer, 10);
                 glutDisplayFunc(onTorreDireitaB);
             } else {
@@ -1393,7 +1503,7 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case '7':
         if(tempoEncerrado == 0){
-            if (lockR == 0  && torreAtual == 7) {
+            if (torreAtual == 7) {
                 glutTimerFunc(GAP, onTorreDireitaTimer, 10);
                 glutDisplayFunc(onTorreDireita);
             } else {
@@ -1403,7 +1513,7 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case '0':
         if(tempoEncerrado == 0){
-            if (lockR == 0  && torreAtual == 8) {
+            if (torreAtual == 8) {
                 glutDisplayFunc(fimDeJogoD);
             } else {
                 glutDisplayFunc(gameOver);
@@ -1417,9 +1527,11 @@ void keyboard(unsigned char key, int x, int y) {
         }
         break;
     }
+
+
     if(tempoEncerrado == 0){
        glutPostRedisplay(); 
-    }
+   }
 }
 
 int main(int argc, char * * argv) {
