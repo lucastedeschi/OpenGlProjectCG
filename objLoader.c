@@ -1182,6 +1182,7 @@ void fimDeJogoD() {
     //Textos
     drawBitmapText("COMO? ISSO EH IMPOSSIVEL!!!!!!;", 1.75, 0.95, 0.0);
     drawBitmapText("VOCE VENCEU;", 1.65, 0.95, 0.0);
+    recomecar = 1;
 
     //Torres (Ordem contrária para fazer sobreposição)
     torreEsquerda(0);
@@ -1252,6 +1253,7 @@ void fimDeJogo() {
     //Textos
     drawBitmapText("Veigar: COMO? ISSO EH IMPOSSÌVEL ;", 1.5, -0.85, 0.0);
     drawBitmapText("VOCE VENCEU!!!!!;", 1.4, -0.85, 0.0);
+    recomecar = 1;
 
     //Torres (Ordem contrária para fazer sobreposição)
     torreEsquerda(3);
