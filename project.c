@@ -35,6 +35,50 @@ void init(void) {
     glShadeModel(GL_FLAT);
 }
 
+void iluminacao(void){
+        GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
+        GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0}; 
+        GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};
+        GLfloat posicaoLuz[4]={100.0, 0.0, 50.0, 1.0}; 
+        GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
+        GLint especMaterial = 60;
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glShadeModel(GL_SMOOTH);
+        
+        glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade); 
+        
+        glMateriali(GL_FRONT,GL_SHININESS,especMaterial); 
+        glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa ); 
+        glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular ); 
+        glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz ); 
+        glEnable(GL_COLOR_MATERIAL);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+        glEnable(GL_DEPTH_TEST);
+        
+        GLfloat luzAmbiente2[4]={0.2,0.2,0.2,1.0}; 
+        GLfloat luzDifusa2[4]={0.7,0.7,0.7,1.0}; 
+        GLfloat luzEspecular2[4]={1.0, 1.0, 1.0, 1.0};
+        GLfloat posicaoLuz2[4]={-100.0, 0.0, 50.0, 1.0}; 
+        GLfloat especularidade2[4]={1.0,1.0,1.0,1.0}; 
+        GLint especMaterial2 = 60;
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glShadeModel(GL_SMOOTH);
+        
+        glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade2); 
+        
+        glMateriali(GL_FRONT,GL_SHININESS,especMaterial2); 
+        glLightfv(GL_LIGHT1, GL_AMBIENT, luzAmbiente2);
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, luzDifusa2); 
+        glLightfv(GL_LIGHT1, GL_SPECULAR, luzEspecular2); 
+        glLightfv(GL_LIGHT1, GL_POSITION, posicaoLuz2); 
+        glEnable(GL_COLOR_MATERIAL);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT1);
+        glEnable(GL_DEPTH_TEST);
+}
+
 void loadObj(char *fname)
 {
     FILE *fp;
@@ -117,8 +161,10 @@ void eixos() {
 }
 
 void pista() {
-    glColor3f(1.0, 1.0, 1.0);
+    iluminacao();
 
+    glColor3f(1.0, 1.0, 1.0);
+    
     //Inicio da Pista   
     glPushMatrix();
     glTranslatef(0.0, -2.05, 0.0);
