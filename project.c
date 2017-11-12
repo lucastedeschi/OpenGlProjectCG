@@ -4,6 +4,12 @@
 #include <math.h>                    
 #include <stdio.h> 
 #include <stdlib.h> 
+#include "SOIL.h"
+
+
+#define MAX_NO_TEXTURES 1
+
+GLuint texture_id[MAX_NO_TEXTURES]; // vetor com os números das texturas 
 
 //GAP do contador entre carregamentos
 #define GAP 1000
@@ -30,17 +36,13 @@ int torreAtual = 0;
 int tempoEncerrado = 0;
 int recomecar = 1;
 
-void init(void) {
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-    glShadeModel(GL_FLAT);
-}
 
 void iluminacao(void){
-        GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
-        GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0}; 
-        GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};
-        GLfloat posicaoLuz[4]={100.0, 0.0, 50.0, 1.0}; 
-        GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
+        GLfloat luzAmbiente[4]={1.0,1.0,1.0,1.0}; 
+        GLfloat luzDifusa[4]={1.0,1.0,1.0,1.0}; 
+        GLfloat luzEspecular[4]={0.0, 0.0, 0.0, 0.0};
+        GLfloat posicaoLuz[4]={50.0, -2.0, -50.0, 1.0}; 
+        GLfloat especularidade[4]={0.0,0.0,0.0,0.0}; 
         GLint especMaterial = 60;
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glShadeModel(GL_SMOOTH);
@@ -56,27 +58,7 @@ void iluminacao(void){
         glEnable(GL_LIGHTING);
         glEnable(GL_LIGHT0);
         glEnable(GL_DEPTH_TEST);
-        
-        GLfloat luzAmbiente2[4]={0.2,0.2,0.2,1.0}; 
-        GLfloat luzDifusa2[4]={0.7,0.7,0.7,1.0}; 
-        GLfloat luzEspecular2[4]={1.0, 1.0, 1.0, 1.0};
-        GLfloat posicaoLuz2[4]={-100.0, 0.0, 50.0, 1.0}; 
-        GLfloat especularidade2[4]={1.0,1.0,1.0,1.0}; 
-        GLint especMaterial2 = 60;
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glShadeModel(GL_SMOOTH);
-        
-        glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade2); 
-        
-        glMateriali(GL_FRONT,GL_SHININESS,especMaterial2); 
-        glLightfv(GL_LIGHT1, GL_AMBIENT, luzAmbiente2);
-        glLightfv(GL_LIGHT1, GL_DIFFUSE, luzDifusa2); 
-        glLightfv(GL_LIGHT1, GL_SPECULAR, luzEspecular2); 
-        glLightfv(GL_LIGHT1, GL_POSITION, posicaoLuz2); 
-        glEnable(GL_COLOR_MATERIAL);
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT1);
-        glEnable(GL_DEPTH_TEST);
+
 }
 
 void loadObj(char *fname)
@@ -114,7 +96,7 @@ void loadObj(char *fname)
 
 void drawBitmapText(char * string, float x, float y, float z) {
     char * c;
-
+    
     glRasterPos3f(x, y, z);
     //glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, string);
 
@@ -162,71 +144,96 @@ void eixos() {
 
 void pista() {
     iluminacao();
-
-    glColor3f(1.0, 1.0, 1.0);
     
+    glEnable ( GL_TEXTURE_2D );
+    glBindTexture(GL_TEXTURE_2D, texture_id[0]);
+    glBegin (GL_QUADS);
+    glColor3f(1.0,1.0,1.0);   
+    glTexCoord2d(0.0, 0.0); glVertex3f(-50.0,-50.0,7.0);
+    glTexCoord2d(1.0, 0.0); glVertex3f(50.0,-50.0,7.0);
+    glTexCoord2d(1.0, 1.0); glVertex3f(50.0,50.0,7.0);
+    glTexCoord2d(0.0, 1.0); glVertex3f(-50.0,50.0,7.0);
+
+    glColor3f(1.0,1.0,1.0);   
+    glTexCoord2d(0.0, 0.0); glVertex3f(-50.0,7.0,-50.0);
+    glTexCoord2d(1.0, 0.0); glVertex3f(50.0,7.0,-50.0);
+    glTexCoord2d(1.0, 1.0); glVertex3f(50.0,7.0,50.0);
+    glTexCoord2d(0.0, 1.0); glVertex3f(-50.0,7.0,50.0);
+
+    glColor3f(1.0,1.0,1.0);   
+    glTexCoord2d(0.0, 0.0); glVertex3f(-50.0,-7.0,-50.0);
+    glTexCoord2d(1.0, 0.0); glVertex3f(50.0,-7.0,-50.0);
+    glTexCoord2d(1.0, 1.0); glVertex3f(50.0,-7.0,50.0);
+    glTexCoord2d(0.0, 1.0); glVertex3f(-50.0,-7.0,50.0);
+    glEnd();
+    glDisable ( GL_TEXTURE_2D );
+
+    glColor3f(0.1, 0.1, 0.0);
+
     //Inicio da Pista   
     glPushMatrix();
     glTranslatef(0.0, -2.05, 0.0);
     glScalef(0.1, 0.5, 1.4);
-    glutWireCube(1.0);
+    glutSolidCube(1.0);
     glPopMatrix();
 
     //Inicio-Meio da Pista   
     glPushMatrix();
     glTranslatef(0.0, -1.40, 0.0);
     glScalef(0.1, 0.8, 2.6);
-    glutWireCube(1.0);
+    glutSolidCube(1.0);
     glPopMatrix();
 
     //Ponte A Inicio Pista
     glPushMatrix();
     glTranslatef(0.0, -0.9, 0.4);
     glScalef(0.1, 0.2, 0.4);
-    glutWireCube(1.0);
+    glutSolidCube(1.0);
     glPopMatrix();
 
     //Ponte B Inicio Pista
     glPushMatrix();
     glTranslatef(0.0, -0.9, -0.4);
     glScalef(0.1, 0.2, 0.4);
-    glutWireCube(1.0);
+    glutSolidCube(1.0);
     glPopMatrix();
 
     //Meio da Pista   
     glPushMatrix();
     glTranslatef(0.0, 0, 0.0);
     glScalef(0.1, 1.6, 2.0);
-    glutWireCube(1.0);
+    glutSolidCube(1.0);
     glPopMatrix();
 
     //Fim-Meio da Pista   
     glPushMatrix();
     glTranslatef(0.0, 1.40, 0.0);
     glScalef(0.1, 0.8, 2.6);
-    glutWireCube(1.0);
+    glutSolidCube(1.0);
     glPopMatrix();
 
     //Ponte A Fim Pista
     glPushMatrix();
     glTranslatef(0.0, 0.9, 0.4);
     glScalef(0.1, 0.2, 0.4);
-    glutWireCube(1.0);
+    glutSolidCube(1.0);
     glPopMatrix();
 
     //Ponte B Fim Pista
     glPushMatrix();
     glTranslatef(0.0, 0.9, -0.4);
     glScalef(0.1, 0.2, 0.4);
-    glutWireCube(1.0);
+    glutSolidCube(1.0);
     glPopMatrix();
 
+    
     //Fim da Pista   
     glPushMatrix();
     glTranslatef(0.0, 2.05, 0.0);
     glScalef(0.1, 0.5, 1.4);
-    glutWireCube(1.0);
+    glutSolidCube(1.0);
     glPopMatrix();
+
 }
 
 void torreEsquerda(int status) {
@@ -750,7 +757,7 @@ void textoCentralizadoTopo() {
 }
 
 void display() {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //Estrutura
     eixos();
@@ -1626,6 +1633,35 @@ void keyboard(unsigned char key, int x, int y) {
     if(tempoEncerrado == 0){
        glutPostRedisplay(); 
    }
+}
+
+void init(void) {
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+    // Habilitar o uso de texturas 
+    
+    glShadeModel(GL_FLAT);
+    // Definir a forma de armazenamento dos pixels na textura (1= alinhamento por byte) 
+    glPixelStorei ( GL_UNPACK_ALIGNMENT, 1 );
+
+    // Definir quantas texturas serão usadas no programa 
+    glGenTextures (1, texture_id);  // 1 = uma textura; 
+                                     // texture_id = vetor que guarda os números das texturas
+
+    // Carrega um arquivo de imagem diretamente como uma nova textura OpenGL
+    texture_id[0] = SOIL_load_OGL_texture
+    (
+        "background.jpg",
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+    );
+    
+    /* check for an error during the load process */
+    if( 0 == texture_id[0] )
+    {
+        printf( "SOIL loading error: '%s'\n", SOIL_last_result() );
+    }
 }
 
 int main(int argc, char * * argv) {
