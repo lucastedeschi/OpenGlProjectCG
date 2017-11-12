@@ -5,6 +5,8 @@
 #include <stdio.h> 
 #include <stdlib.h> 
 #include "SOIL.h"
+#include <time.h>
+#include <string.h>
 
 
 #define MAX_NO_TEXTURES 1
@@ -35,6 +37,16 @@ int status = 0;
 int torreAtual = 0;
 int tempoEncerrado = 0;
 int recomecar = 1;
+int respostaErrada,respostaCorreta,n; 
+int respostasCorretas[9] = {-3,9,5,2,8,6,3,7,0};
+int start = 0;
+
+int generateNumber(){
+    int n;
+    srand(time(NULL));
+    n = rand() % 3;
+    return n;
+}
 
 
 void iluminacao(void){
@@ -676,6 +688,9 @@ void chefeTorreMeioA(int status) {
     glPopMatrix();
 }
 
+
+
+
 void chefeTorreMeioEsquerdaB(int status) {
 
     switch (status) {
@@ -818,10 +833,20 @@ void onTorreMeio(void) {
         //Textos
         recomecar = 0;
         drawBitmapText("Brand: Um Intruso!!!! Voce queimara ao tentar me desafiar!!!!;", 1.5, -0.85, 0.0);
-
         //Contador
         char text[100];
-        sprintf(text, "Resolva 7 + 2 em %d segundos;", onTorreMeioCounter);
+	switch(n){
+		case 0:
+			    sprintf(text, "Resolva 7+2 em %d segundos;", onTorreMeioCounter);
+		break;
+		case 1:
+			    sprintf(text, "Resolva 5+4 em %d segundos;", onTorreMeioCounter);
+		break;
+		case 2:
+			    sprintf(text, "Resolva 14-5 em %d segundos;", onTorreMeioCounter);
+		break;
+		
+	}
         drawBitmapText(text, 1.4, -0.85, 0.0);
     }
 
@@ -893,10 +918,21 @@ void onTorreEsquerdaA(void) {
         recomecar = 0;
         drawBitmapText("Brand: NAOOO Vinguem-me Irmaos!!!!;", 1.5, -0.85, 0.0);
         drawBitmapText("Ziggs: Vou adorar apresentar voce às minhas amigas estouradas!!!!;", 1.4, -0.85, 0.0);
-
         //Contador
         char text[100];
-        sprintf(text, "Resolva 12 - 7 em %d segundos;", onTorreEsquerdaACounter);
+	switch(n){
+		case 0:
+			sprintf(text, "Resolva 10-5 em %d segundos;", onTorreEsquerdaACounter);
+		break;
+		case 1:
+			sprintf(text, "Resolva 12-7 em %d segundos;", onTorreEsquerdaACounter);
+		break;
+		case 2:
+			sprintf(text, "Resolva 41-36 em %d segundos;", onTorreEsquerdaACounter);
+		break;
+			
+	}
+        
         drawBitmapText(text, 1.3, -0.85, 0.0);
     }
 
@@ -971,7 +1007,18 @@ void onTorreEsquerdaB(void) {
 
         //Contador
         char text[100];
-        sprintf(text, "Resolva 7 + 7 - 21 + 9 em %d segundos;", onTorreEsquerdaBCounter);
+	switch(n){
+		case 0:
+			    sprintf(text, "Resolva 7 + 7 - 21 + 9 em %d segundos;", onTorreEsquerdaBCounter);
+		break;
+		case 1:
+			  sprintf(text, "Resolva 11 + 8 -17 em %d segundos;", onTorreEsquerdaBCounter);
+		break;
+		case 2:
+			  sprintf(text, "Resolva 14-5-7 em %d segundos;", onTorreEsquerdaBCounter);
+		break;
+	}
+    
         drawBitmapText(text, 1.3, -0.85, 0.0);
     }
 
@@ -1048,7 +1095,19 @@ void onTorreEsquerda() {
 
         //Contador
         char text[100];
-        sprintf(text, "Resolva 7 + 5 - 14 + 21 + 3 - 14 em %d segundos;", onTorreEsquerdaCounter);
+	switch(n){
+		case 0:
+			   sprintf(text, "Resolva 7 + 5 - 14 + 21 + 3 - 14 em %d segundos;", onTorreEsquerdaCounter);
+		break;
+		case 1:
+			   sprintf(text, "Resolva 8 + 6 - 6 + 28 -28 em %d segundos;", onTorreEsquerdaCounter);	
+		break;
+		case 2:
+			   sprintf(text, "Resolva 0 + 2 -2 +2 -2 + 8 em %d segundos;", onTorreEsquerdaCounter);	
+		break;
+
+	}
+    
         drawBitmapText(text, 1.3, -0.85, 0.0);
     }
 
@@ -1121,7 +1180,18 @@ void onTorreMeioB() {
 
         //Contador
         char text[100];
-        sprintf(text, "Resolva 1.2 * 5 em %d segundos;", onTorreMeioBCounter);
+	switch(n){
+		case 0:
+			    sprintf(text, "Resolva 60/10 em %d segundos;", onTorreMeioBCounter);
+		break;
+		case 1:
+			    sprintf(text, "Resolva 1.2 * 5 em %d segundos;", onTorreMeioBCounter);
+		break;
+		case 2:
+			    sprintf(text, "Resolva 36/6 em %d segundos;", onTorreMeioBCounter);
+		break;
+	}
+    
         drawBitmapText(text, 1.65, 0.95, 0.0);
     }
 
@@ -1195,7 +1265,19 @@ void onTorreDireitaA() {
 
         //Contador
         char text[100];
-        sprintf(text, "Resolva 18/6 em %d segundos;", onTorreDireitaACounter);
+	switch(n){
+		case 0:
+			sprintf(text, "Resolva 18/6 em %d segundos;", onTorreDireitaACounter);
+		break;
+		case 1:
+			sprintf(text, "Resolva 27/9 em %d segundos;", onTorreDireitaACounter);
+		break;
+		case 2: 
+			sprintf(text, "Resolva 9/3 em %d segundos;", onTorreDireitaACounter);
+		break;
+		
+	}
+        
         drawBitmapText(text, 1.55, 0.95, 0.0);
     }
 
@@ -1343,7 +1425,17 @@ void onTorreDireita() {
 
         //Contador
         char text[100];
-        sprintf(text, "Resolva (((((8 * 9) / 4) + 21 ) * 0) / 7)) em %d segundos;", onTorreDireitaCounter);
+	switch(n){
+		case 0:
+			       sprintf(text, "Resolva (((((8 * 9) / 4) + 21 ) * 0) / 7)) em %d segundos;", onTorreDireitaCounter);
+		break;
+		case 1:
+			       sprintf(text, "Resolva (((((6 * 9) / 27) + 21 ) * 0) / 11)) em %d segundos;", onTorreDireitaCounter);
+		break;
+		case 2:
+			       sprintf(text, "Resolva (((((9 * 9) / 3) + 27 ) * 0) / 9)) em %d segundos;", onTorreDireitaCounter);
+		break;
+	}
         drawBitmapText(text, 1.55, 0.95, 0.0);
     }
 
@@ -1420,17 +1512,33 @@ void fimDeJogoD() {
     glutSwapBuffers();
 
 }
-
+void renderBitmapString(float x, float y, void *font,const char *string){
+    const char *c;
+    glRasterPos2f(x, y);
+    for (c=string; *c != '\0'; c++) {
+        glutBitmapCharacter(font, *c);
+    }
+} 
 void gameOver() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     //Estrutura
     eixos();
     pista();
+    //Textos 
+    if(start == 1){
+	    char buffer[10]={'\0'};
+	    sprintf(buffer, "%d", respostaErrada); 
+	    drawBitmapText("Respota Errada;", 1.5, -0.35, 0.0);
+	    drawBitmapText("Voce digitou a resposta:;", 1.45, -0.35, 0.0);
+	    renderBitmapString(1.4f, -0.35f, GLUT_BITMAP_HELVETICA_18, buffer);
+	    char buffer2[10] = {'\0'};
+	    sprintf(buffer2, "%d", respostaCorreta); 
+	    drawBitmapText("A resposta correta seria:;", 1.35, -0.35, 0.0);
+	    renderBitmapString(1.3f, -0.35f, GLUT_BITMAP_HELVETICA_18, buffer2);
+	    drawBitmapText("VOCE PERDEU!!!!!!!;", 1.25, -0.35, 0.0);
 
-    //Textos
-    drawBitmapText("Respota Errada;", 1.5, -0.35, 0.0);
-    drawBitmapText("VOCE PERDEU!!!!!!!;", 1.45, -0.35, 0.0);
+    }
     recomecar = 1;
 
     //Torres (Ordem contrária para fazer sobreposição)
@@ -1504,6 +1612,8 @@ void reshape(int w, int h) {
 void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case 'd': //Seleciona lado direito
+	n = generateNumber();
+	start = 1;
         if(recomecar == 1){
             posx = 2.0f;
             posy = -1.0f;
@@ -1523,6 +1633,8 @@ void keyboard(unsigned char key, int x, int y) {
         }
         break;
     case 'n': //Seleciona lado esquerdo
+	n = generateNumber();
+	start = 1;
         if(recomecar == 1){
             posx = 2.0f;
             posy = 1.0f;
@@ -1543,80 +1655,105 @@ void keyboard(unsigned char key, int x, int y) {
         }
         break;
     case '9':
+	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 1) {
                 glutTimerFunc(GAP, onTorreEsquerdaATimer, 10);
                 glutDisplayFunc(onTorreEsquerdaA);
             } else {
+		respostaErrada = 9;
+		respostaCorreta = respostasCorretas[torreAtual];
                 glutDisplayFunc(gameOver);
+
             }
         }
         break;
     case '5':
+	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 2) {
                 glutTimerFunc(GAP, onTorreEsquerdaBTimer, 10);
                 glutDisplayFunc(onTorreEsquerdaB);
             } else {
+		respostaErrada = 5;
+		respostaCorreta = respostasCorretas[torreAtual];
                 glutDisplayFunc(gameOver);
             }
         }
         break;
     case '2':
+	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 3) {
                 glutTimerFunc(GAP, onTorreEsquerdaTimer, 10);
                 glutDisplayFunc(onTorreEsquerda);
             } else {
+		respostaErrada = 2;
+		respostaCorreta = respostasCorretas[torreAtual];
                 glutDisplayFunc(gameOver);
             }
         }
         break;
     case '8':
+	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 4) {
                 glutDisplayFunc(fimDeJogo);
             } else {
+		respostaErrada = 8;
+		respostaCorreta = respostasCorretas[torreAtual];
                 glutDisplayFunc(gameOver);
             }
         }
         break;
     case '6':
+	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 5) {
                 glutTimerFunc(GAP, onTorreDireitaATimer, 10);
                 glutDisplayFunc(onTorreDireitaA);
             } else {
+		respostaErrada = 6;
+		respostaCorreta = respostasCorretas[torreAtual];
                 glutDisplayFunc(gameOver);
             }
         }
 
         break;
     case '3':
+	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 6) {
                 glutTimerFunc(GAP, onTorreDireitaBTimer, 10);
                 glutDisplayFunc(onTorreDireitaB);
             } else {
+		respostaErrada = 3;
+		respostaCorreta = respostasCorretas[torreAtual];
                 glutDisplayFunc(gameOver);
             }
         }
         break;
     case '7':
+	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 7) {
                 glutTimerFunc(GAP, onTorreDireitaTimer, 10);
                 glutDisplayFunc(onTorreDireita);
             } else {
+		respostaErrada = 7;
+		respostaCorreta = respostasCorretas[torreAtual];
                 glutDisplayFunc(gameOver);
             }
         }
         break;
     case '0':
+	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 8) {
                 glutDisplayFunc(fimDeJogoD);
             } else {
+		respostaErrada = 0;
+		respostaCorreta = respostasCorretas[torreAtual];
                 glutDisplayFunc(gameOver);
             }
         }
@@ -1624,6 +1761,12 @@ void keyboard(unsigned char key, int x, int y) {
 
     default:
         if(tempoEncerrado == 0){
+	    if(key == '4'){
+	    	respostaErrada = 4;
+	    } else if (key == '1'){
+	    	respostaErrada = 1;
+	    }
+	    respostaCorreta = respostasCorretas[torreAtual];
             glutDisplayFunc(gameOver);
         }
         break;
