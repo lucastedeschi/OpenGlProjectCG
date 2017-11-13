@@ -15,13 +15,14 @@ GLuint texture_id[MAX_NO_TEXTURES]; // vetor com os números das texturas
 
 //GAP do contador entre carregamentos
 #define GAP 1000
+#define Seconds 20
 
 //Personagem
 GLuint character;
 
 //Variáveis auxiliares para o contador
-static int onTorreMeioCounter = 10, onTorreEsquerdaCounter = 10, onTorreEsquerdaACounter = 10, onTorreEsquerdaBCounter = 10;
-static int onTorreMeioBCounter = 10, onTorreDireitaACounter = 10, onTorreDireitaBCounter = 10, onTorreDireitaCounter = 10;
+static int onTorreMeioCounter = Seconds, onTorreEsquerdaCounter = Seconds, onTorreEsquerdaACounter = Seconds, onTorreEsquerdaBCounter = Seconds;
+static int onTorreMeioBCounter = Seconds, onTorreDireitaACounter = Seconds, onTorreDireitaBCounter = Seconds, onTorreDireitaCounter = Seconds;
 static int onTorreMeioTimerAux = 0, onTorreEsquerdaTimerAux = 0, onTorreEsquerdaATimerAux = 0, onTorreEsquerdaBTimerAux = 0;
 static int onTorreMeioBTimerAux = 0, onTorreDireitaATimerAux = 0, onTorreDireitaBTimerAux = 0, onTorreDireitaTimerAux = 0;
 
@@ -48,29 +49,52 @@ int generateNumber(){
     return n;
 }
 
+void renderBitmapString(float x, float y, void *font,const char *string){
+    const char *c;
+    glRasterPos2f(x, y);
+    for (c=string; *c != '\0'; c++) {
+        glutBitmapCharacter(font, *c);
+    }
+} 
 
 void iluminacao(void){
-        GLfloat luzAmbiente[4]={1.0,1.0,1.0,1.0}; 
-        GLfloat luzDifusa[4]={1.0,1.0,1.0,1.0}; 
-        GLfloat luzEspecular[4]={0.0, 0.0, 0.0, 0.0};
-        GLfloat posicaoLuz[4]={50.0, -2.0, -50.0, 1.0}; 
-        GLfloat especularidade[4]={0.0,0.0,0.0,0.0}; 
-        GLint especMaterial = 60;
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glShadeModel(GL_SMOOTH);
-        
-        glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade); 
-        
-        glMateriali(GL_FRONT,GL_SHININESS,especMaterial); 
-        glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa ); 
-        glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular ); 
-        glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz ); 
-        glEnable(GL_COLOR_MATERIAL);
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT0);
-        glEnable(GL_DEPTH_TEST);
+        GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
+        GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};	   // "cor" 
+        GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
+        GLfloat posicaoLuz[4]={50.0, 00.0, -30.0, 1.0};
 
+        // Capacidade de brilho do material
+        GLfloat especularidade[4]= {0.3,0.3,0.3,0.3}; 
+        GLint especMaterial = 30;
+
+        // Especifica que a cor de fundo da janela será preta
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        // Habilita o modelo de colorização de Gouraud
+        glShadeModel(GL_SMOOTH);
+
+        // Define a refletância do material 
+        //glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
+
+        // Define a concentração do brilho
+        glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
+
+        // Ativa o uso da luz ambiente 
+        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+
+        // Define os parâmetros da luz de número 0
+        glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
+        glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
+        glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
+        // Habilita a definição da cor do material a partir da cor corrente
+        glEnable(GL_COLOR_MATERIAL);
+        //Habilita o uso de iluminação
+        glEnable(GL_LIGHTING);  
+        // Habilita a luz de número 0
+        glEnable(GL_LIGHT0);
+        // Habilita o depth-buffering
+        glEnable(GL_DEPTH_TEST);
 }
 
 void loadObj(char *fname)
@@ -113,7 +137,7 @@ void drawBitmapText(char * string, float x, float y, float z) {
     //glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, string);
 
     for (c = string; * c != ';'; c++) {
-
+        glColor3f(1.0, 1.0, 1.0);
         glutBitmapCharacter(GLUT_BITMAP_8_BY_13, * c);
         //glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *c)
         //glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, *c)
@@ -125,7 +149,6 @@ void drawBitmapText(char * string, float x, float y, float z) {
 }
 
 void eixos() {
-
     //eixo x
     //glPushMatrix();
     //glBegin(GL_LINES);
@@ -154,33 +177,46 @@ void eixos() {
     //glPopMatrix();
 }
 
-void pista() {
-    iluminacao();
-    
+void fundo() {
     glEnable ( GL_TEXTURE_2D );
     glBindTexture(GL_TEXTURE_2D, texture_id[0]);
     glBegin (GL_QUADS);
     glColor3f(1.0,1.0,1.0);   
-    glTexCoord2d(0.0, 0.0); glVertex3f(-50.0,-50.0,7.0);
-    glTexCoord2d(1.0, 0.0); glVertex3f(50.0,-50.0,7.0);
-    glTexCoord2d(1.0, 1.0); glVertex3f(50.0,50.0,7.0);
-    glTexCoord2d(0.0, 1.0); glVertex3f(-50.0,50.0,7.0);
-
-    glColor3f(1.0,1.0,1.0);   
-    glTexCoord2d(0.0, 0.0); glVertex3f(-50.0,7.0,-50.0);
-    glTexCoord2d(1.0, 0.0); glVertex3f(50.0,7.0,-50.0);
-    glTexCoord2d(1.0, 1.0); glVertex3f(50.0,7.0,50.0);
-    glTexCoord2d(0.0, 1.0); glVertex3f(-50.0,7.0,50.0);
-
-    glColor3f(1.0,1.0,1.0);   
-    glTexCoord2d(0.0, 0.0); glVertex3f(-50.0,-7.0,-50.0);
-    glTexCoord2d(1.0, 0.0); glVertex3f(50.0,-7.0,-50.0);
-    glTexCoord2d(1.0, 1.0); glVertex3f(50.0,-7.0,50.0);
-    glTexCoord2d(0.0, 1.0); glVertex3f(-50.0,-7.0,50.0);
+    glTexCoord2d(0, 0); glVertex3f(-16.0,-16.0,5.0);
+    glTexCoord2d(1, 0); glVertex3f(16.0,-16.0,5.0);
+    glTexCoord2d(1, 1); glVertex3f(16.0,16.0,5.0);
+    glTexCoord2d(0, 1); glVertex3f(-16.0,16.0,5.0);
     glEnd();
     glDisable ( GL_TEXTURE_2D );
 
-    glColor3f(0.1, 0.1, 0.0);
+    glEnable ( GL_TEXTURE_2D );
+    glBindTexture (GL_TEXTURE_2D, texture_id[0]);
+    glBegin (GL_QUADS);
+    glColor3f(1.0,1.0,1.0);  
+    glTexCoord2d(0, 0); glVertex3f(-16.0,10.0,-16.0);
+    glTexCoord2d(1, 0); glVertex3f(16.0,10.0,-16.0);
+    glTexCoord2d(1, 1); glVertex3f(16.0,10.0,5.0);
+    glTexCoord2d(0, 1); glVertex3f(-16.0,10.0,5.0);
+    glEnd();
+    glDisable ( GL_TEXTURE_2D );
+
+    glEnable ( GL_TEXTURE_2D );
+    glBindTexture (GL_TEXTURE_2D, texture_id[0]);
+    glBegin (GL_QUADS);
+    glColor3f(1.0,1.0,1.0);  
+    glTexCoord2d(0, 0); glVertex3f(-16.0,-10.0,-16.0);
+    glTexCoord2d(1, 0); glVertex3f(16.0,-10.0,-16.0);
+    glTexCoord2d(1, 1); glVertex3f(16.0,-10.0,5.0);
+    glTexCoord2d(0, 1); glVertex3f(-16.0,-10.0,5.0);
+    glEnd();
+    glDisable ( GL_TEXTURE_2D );
+}
+
+void pista() {
+    iluminacao();
+    fundo();
+
+    glColor3f(0.4, 0.4, 0.4);
 
     //Inicio da Pista   
     glPushMatrix();
@@ -238,14 +274,12 @@ void pista() {
     glutSolidCube(1.0);
     glPopMatrix();
 
-    
     //Fim da Pista   
     glPushMatrix();
     glTranslatef(0.0, 2.05, 0.0);
     glScalef(0.1, 0.5, 1.4);
     glutSolidCube(1.0);
     glPopMatrix();
-
 }
 
 void torreEsquerda(int status) {
@@ -568,6 +602,10 @@ void torreDireita(int status) {
 }
 
 void chefeTorreDireita(int status) {
+    GLfloat position[] = {1.0, 1.75, 0.0, 1.0 };
+    glLightfv( GL_LIGHT0, GL_POSITION, position);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
 
     switch (status) {
     case 0: //Padrão (ainda não chegou na torre)
@@ -589,9 +627,14 @@ void chefeTorreDireita(int status) {
     glScalef(0.03, 0.03, 0.03);
     glCallList(character);
     glPopMatrix();
+    
 }
 
 void chefeTorreMeioDireitaB(int status) {
+    GLfloat position[] = {0.8, 1.20, -0.6, 1.0 };
+    glLightfv( GL_LIGHT0, GL_POSITION, position);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
 
     switch (status) {
     case 0: //Padrão (ainda não chegou na torre)
@@ -616,6 +659,10 @@ void chefeTorreMeioDireitaB(int status) {
 }
 
 void chefeTorreMeioDireitaA(int status) {
+    GLfloat position[] = {0.8, 1.20, 0.6, 1.0 };
+    glLightfv( GL_LIGHT0, GL_POSITION, position);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
 
     switch (status) {
     case 0: //Padrão (ainda não chegou na torre)
@@ -640,6 +687,10 @@ void chefeTorreMeioDireitaA(int status) {
 }
 
 void chefeTorreMeioB(int status) {
+    GLfloat position[] = {0.8, -0.1, 0.0, 1.0 };
+    glLightfv( GL_LIGHT0, GL_POSITION, position);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
 
     switch (status) {
     case 0: //Padrão (ainda não chegou na torre)
@@ -665,6 +716,10 @@ void chefeTorreMeioB(int status) {
 }
 
 void chefeTorreMeioA(int status) {
+    GLfloat position[] = {0.8, 0.1 , 0.0, 1.0 };
+    glLightfv( GL_LIGHT0, GL_POSITION, position);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
 
     switch (status) {
     case 0: //Padrão (ainda não chegou na torre)
@@ -688,10 +743,11 @@ void chefeTorreMeioA(int status) {
     glPopMatrix();
 }
 
-
-
-
 void chefeTorreMeioEsquerdaB(int status) {
+    GLfloat position[] = {0.8, -1.20, -0.6, 1.0 };
+    glLightfv( GL_LIGHT0, GL_POSITION, position);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
 
     switch (status) {
     case 0: //Padrão (ainda não chegou na torre)
@@ -717,6 +773,10 @@ void chefeTorreMeioEsquerdaB(int status) {
 }
 
 void chefeTorreMeioEsquerdaA(int status) {
+    GLfloat position[] = {0.8, -1.20, 0.6, 1.0 };
+    glLightfv( GL_LIGHT0, GL_POSITION, position);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
 
     switch (status) {
     case 0: //Padrão (ainda não chegou na torre)
@@ -742,6 +802,10 @@ void chefeTorreMeioEsquerdaA(int status) {
 }
 
 void chefeTorreEsquerda(int status) {
+    GLfloat position[] = {1.0, -1.75, 0.0, 1.0 };
+    glLightfv( GL_LIGHT0, GL_POSITION, position);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
 
     switch (status) {
     case 0: //Padrão (ainda não chegou na torre)
@@ -768,7 +832,14 @@ void chefeTorreEsquerda(int status) {
 
 void textoCentralizadoTopo() {
     glColor3f(1.0, 1.0, 1.0);
-    drawBitmapText("Escolha a dificuldade.  Digite 'd' para dificil e 'n' para normal;", 1.5, -0.35, 0.0); //texto com final ';', x, y, z (centralizar na tela mexendo no z e no y, altura mexe no x)
+    char buffer[30] = {'\0'};
+    sprintf(buffer, "%s", "MATH OF LEGENDS"); 
+	renderBitmapString(1.45f, -0.5f, GLUT_BITMAP_TIMES_ROMAN_24, buffer);
+    char buffer2[100] = {'\0'};
+    sprintf(buffer2, "%s", "DERROTE OS CAMPEOES COM OS PODERES DA MATEMATICA"); 
+	renderBitmapString(1.25f, -1.2f, GLUT_BITMAP_HELVETICA_18, buffer2);
+    drawBitmapText("Quando a torre estiver amarela o relogio ja vai estar correndo. Fique preparado!;", -2.2, -2.3, 0.0); //texto com final ';', x, y, z (centralizar na tela mexendo no z e no y, altura mexe no x)
+    drawBitmapText("Esta pronto? Vamos ver do que voce e capaz!  Digite 'd' para dificil e 'n' para normal;", -2.5, -2.5, 0.0); //texto com final ';', x, y, z (centralizar na tela mexendo no z e no y, altura mexe no x)
 }
 
 void display() {
@@ -823,6 +894,7 @@ void onTorreMeio(void) {
     eixos();
     pista();
 
+    glColor3f(1.0, 1.0, 1.0);
     if(onTorreMeioCounter == 0){
         tempoEncerrado = 1;
         recomecar = 1;
@@ -917,7 +989,7 @@ void onTorreEsquerdaA(void) {
         //Textos
         recomecar = 0;
         drawBitmapText("Brand: NAOOO Vinguem-me Irmaos!!!!;", 1.5, -0.85, 0.0);
-        drawBitmapText("Ziggs: Vou adorar apresentar voce às minhas amigas estouradas!!!!;", 1.4, -0.85, 0.0);
+        drawBitmapText("Ziggs: Vou adorar apresentar voce as minhas amigas estouradas!!!!;", 1.4, -0.85, 0.0);
         //Contador
         char text[100];
 	switch(n){
@@ -1002,7 +1074,7 @@ void onTorreEsquerdaB(void) {
     } else{
         //Textos
         recomecar = 0;
-        drawBitmapText("Ziggs: Cedo ou tarde você conhecerá a sua dor!;", 1.5, -0.85, 0.0);
+        drawBitmapText("Ziggs: Cedo ou tarde voce conhecera a sua dor!;", 1.5, -0.85, 0.0);
         drawBitmapText("Malzahar: O Poder do vazio mostrara o seu destino;", 1.4, -0.85, 0.0);
 
         //Contador
@@ -1346,7 +1418,7 @@ void onTorreDireitaB() {
     } else{
         recomecar = 0;
         //Textos
-        drawBitmapText("Ziggs: Cedo ou tarde você conhecerá a sua dor!;", 1.75, 0.95, 0.0);
+        drawBitmapText("Ziggs: Cedo ou tarde voce conhecera a sua dor!;", 1.75, 0.95, 0.0);
         drawBitmapText("Malzahar: O Poder do vazio mostrara o seu destino;", 1.65, 0.95, 0.0);
 
         //Contador
@@ -1512,13 +1584,7 @@ void fimDeJogoD() {
     glutSwapBuffers();
 
 }
-void renderBitmapString(float x, float y, void *font,const char *string){
-    const char *c;
-    glRasterPos2f(x, y);
-    for (c=string; *c != '\0'; c++) {
-        glutBitmapCharacter(font, *c);
-    }
-} 
+
 void gameOver() {
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -1528,8 +1594,9 @@ void gameOver() {
     //Textos 
     if(start == 1){
 	    char buffer[10]={'\0'};
+        glColor3f(1.0, 1.0, 1.0);
 	    sprintf(buffer, "%d", respostaErrada); 
-	    drawBitmapText("Respota Errada;", 1.5, -0.35, 0.0);
+	    drawBitmapText("Resposta Errada;", 1.5, -0.35, 0.0);
 	    drawBitmapText("Voce digitou a resposta:;", 1.45, -0.35, 0.0);
 	    renderBitmapString(1.4f, -0.35f, GLUT_BITMAP_HELVETICA_18, buffer);
 	    char buffer2[10] = {'\0'};
@@ -1537,7 +1604,8 @@ void gameOver() {
 	    drawBitmapText("A resposta correta seria:;", 1.35, -0.35, 0.0);
 	    renderBitmapString(1.3f, -0.35f, GLUT_BITMAP_HELVETICA_18, buffer2);
 	    drawBitmapText("VOCE PERDEU!!!!!!!;", 1.25, -0.35, 0.0);
-
+        drawBitmapText("Escolha a dificuldade.  Digite 'd' para dificil e 'n' para normal;", 1.8, 0.5, 0.0); //texto com final ';', x, y, z (centralizar na tela mexendo no z e no y, altura mexe no x)
+        drawBitmapText("Escolha a dificuldade.  Digite 'd' para dificil e 'n' para normal;", 1.7, -1.0, 0.0); //texto com final ';', x, y, z (centralizar na tela mexendo no z e no y, altura mexe no x)
     }
     recomecar = 1;
 
@@ -1627,7 +1695,7 @@ void keyboard(unsigned char key, int x, int y) {
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
             tempoEncerrado = 0;
-            glutTimerFunc(GAP, onTorreMeioBTimer, 10);
+            glutTimerFunc(GAP, onTorreMeioBTimer, Seconds);
             gluLookAt(posx, posy, posz, focx, focy, focz, disx, disy, disz);
             glutDisplayFunc(onTorreMeioB);
         }
@@ -1650,7 +1718,7 @@ void keyboard(unsigned char key, int x, int y) {
             tempoEncerrado = 0;
             gluLookAt(posx, posy, posz, focx, focy, focz, disx, disy, disz);
             status = 1;
-            glutTimerFunc(GAP, onTorreMeioTimer, 10);
+            glutTimerFunc(GAP, onTorreMeioTimer, Seconds);
             glutDisplayFunc(onTorreMeio);
         }
         break;
@@ -1658,7 +1726,7 @@ void keyboard(unsigned char key, int x, int y) {
 	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 1) {
-                glutTimerFunc(GAP, onTorreEsquerdaATimer, 10);
+                glutTimerFunc(GAP, onTorreEsquerdaATimer, Seconds);
                 glutDisplayFunc(onTorreEsquerdaA);
             } else {
 		respostaErrada = 9;
@@ -1672,7 +1740,7 @@ void keyboard(unsigned char key, int x, int y) {
 	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 2) {
-                glutTimerFunc(GAP, onTorreEsquerdaBTimer, 10);
+                glutTimerFunc(GAP, onTorreEsquerdaBTimer, Seconds);
                 glutDisplayFunc(onTorreEsquerdaB);
             } else {
 		respostaErrada = 5;
@@ -1685,7 +1753,7 @@ void keyboard(unsigned char key, int x, int y) {
 	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 3) {
-                glutTimerFunc(GAP, onTorreEsquerdaTimer, 10);
+                glutTimerFunc(GAP, onTorreEsquerdaTimer, Seconds);
                 glutDisplayFunc(onTorreEsquerda);
             } else {
 		respostaErrada = 2;
@@ -1710,7 +1778,7 @@ void keyboard(unsigned char key, int x, int y) {
 	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 5) {
-                glutTimerFunc(GAP, onTorreDireitaATimer, 10);
+                glutTimerFunc(GAP, onTorreDireitaATimer, Seconds);
                 glutDisplayFunc(onTorreDireitaA);
             } else {
 		respostaErrada = 6;
@@ -1724,7 +1792,7 @@ void keyboard(unsigned char key, int x, int y) {
 	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 6) {
-                glutTimerFunc(GAP, onTorreDireitaBTimer, 10);
+                glutTimerFunc(GAP, onTorreDireitaBTimer, Seconds);
                 glutDisplayFunc(onTorreDireitaB);
             } else {
 		respostaErrada = 3;
@@ -1737,7 +1805,7 @@ void keyboard(unsigned char key, int x, int y) {
 	n = generateNumber();
         if(tempoEncerrado == 0){
             if (torreAtual == 7) {
-                glutTimerFunc(GAP, onTorreDireitaTimer, 10);
+                glutTimerFunc(GAP, onTorreDireitaTimer, Seconds);
                 glutDisplayFunc(onTorreDireita);
             } else {
 		respostaErrada = 7;
